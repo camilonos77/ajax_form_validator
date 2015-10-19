@@ -2,14 +2,68 @@
 <html>
 <head>
     <title>Ajax jquery validator </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
 </head>
 <body>
-    <div class="wrapper">
-        <h1>This is a headline</h1>
+    <div class="container">
+        <h1>Ajax jquery validator</h1>
+
+        <form role="form">
+
+                  <div class="form-group">
+                    <label for="email">Email address:</label>
+                    <input type="email"  class="form-control" id="email">
+                  </div>
+                  <div class="form-group">
+                    <label for="pwd">Password:</label>
+                    <input type="password" class="form-control" id="pwd">
+                  </div>
+
+                  <button type="submit" id="btn-save-form" class="btn btn-default">Submit</button>
+        </form>
+
+
     </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script src="js/form_validator.js"    type="text/javascript" ></script>
 
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="js/form_validator.js"    type="text/javascript" ></script>
+    <script>
+
+        $( document ).ready(function() {
+
+
+            $('#btn-save-form').click(function(){
+
+                    var a = new AjaxValidator({
+                            lang : "es",
+                            fields :['email','pwd'],
+                        });
+
+                    if(a.getValidation()){
+
+                        console.log("valido");
+
+                    }else{
+
+                        console.log("no valido");
+                    }
+
+
+                    return false;
+
+            });
+
+
+            return false;
+
+        });
+
+
+
+    </script>
 </body>
 </html>
