@@ -7,6 +7,7 @@
     var spanError  = "<span class='error-label-form-validator'>";
     var spanErrorFin  = "</span>";
     var ERROR_ES = "Error el campo es requerido ";
+    var ERROR_EMAIL_ES = "Error el campo  correo no es válido ";
     // Define function constructor
     this.AjaxValidator = function(params) {
 
@@ -16,6 +17,7 @@
          }else{
                 // clear existing errors
                 $('.error-label-form-validator').remove();
+                counterErrros = 0;
 
                 // check if has fields param
                 if(params.hasOwnProperty('fields') === true ){
@@ -25,14 +27,10 @@
                     for(var counter = 0; counter < params.fields.length;counter++ ){
 
                         counterErrros += validateSize(params.fields[counter]);
-
                     }
-
-
-
                 }else{
 
-                    console.log(" The validation form need the fields specification ");
+                    //console.log(" The validation form need the fields specification ");
                     return false;
                 }
 
@@ -56,15 +54,96 @@
     */
 
     function validateSize(field){
-        if( $('#'+field).val() === "" || $('#'+field).val()  === null   ){
 
-                $(spanError+ERROR_ES+spanErrorFin).insertAfter("#"+field).css('color','red');
+        var inputType = $('#'+field).attr('type'); // get type field
+        var returnValue = 0;
+        
+        switch(inputType){
 
-                return 1;
+            case "text":
+
+                    if( $('#'+field).val() === "" || $('#'+field).val()  === null   ){
+
+                        $(spanError+ERROR_ES+spanErrorFin).insertAfter("#"+field).css('color','red');
+
+                           returnValue = 1;
+                     }else{
+
+                            returnValue = 0;
+
+                     }
+        
+
+            break;
+
+            case "password":
+
+                    if( $('#'+field).val() === "" || $('#'+field).val()  === null   ){
+
+                        $(spanError+ERROR_ES+spanErrorFin).insertAfter("#"+field).css('color','red');
+
+                           returnValue = 1;
+                     }else{
+
+                            returnValue = 0;
+
+                     }
+        
+
+            break;
+
+            case "email":
+
+                        if(checkEmail($("#"+field).val()) === false ){
+
+                                $(spanError+ERROR_EMAIL_ES+spanErrorFin).insertAfter("#"+field).css('color','red');
+                                returnValue = 1;
+                        }else{
+
+                            returnValue = 0;
+                     }
+            break;
+
+
+            default:
+
+                    if( $('#'+field).val() === "" || $('#'+field).val()  === null   ){
+
+                        $(spanError+ERROR_ES+spanErrorFin).insertAfter("#"+field).css('color','red');
+
+                            returnValue = 1;
+                     }else{
+
+                            returnValue = 0;
+
+                     }
+
+            break;
         }
 
-        return 0;
+        return returnValue;
+
+        
     }
+
+    /*
+        Check if field is email
+    */
+    function checkEmail(valor) {
+            var email = valor;
+            var filter = /^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+\.)+(([a-zA-Z0-9-])+\.)*([a-zA-Z0-9]{2,4})+$/;
+            if (!filter.test(email)) {
+                return false;
+            }else{
+                return true;    
+            }
+    }
+
+
+
+
+
+
 
     /*
         Check if object is empty
