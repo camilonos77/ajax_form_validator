@@ -47,8 +47,26 @@
                         });
 
                     if(a.getValidation()){
+
                         console.log(a.getData());
-                        console.log("valido");
+		
+	 	           $.ajax({
+                                    "type" : "POST",
+                                    "url" : "ajax/actualiza_carro.php" ,
+                                    "data":a.getData(),
+                                    "beforeSend" : function(){
+                                          
+                                    },
+                                    "success" : function( data ){
+                                            console.log("data");
+                                    },
+                                    "error":
+                                    function( ){
+                                            
+                                    }
+                            });                        
+
+
 
                     }else{
 

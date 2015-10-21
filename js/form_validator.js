@@ -57,25 +57,25 @@
     */
 
     AjaxValidator.prototype.getData = function(){
-
+        var dataReturn = {};
         if(parametros === null || parametros === undefined || checkObject(parametros) === 0){
                 console.log(" Error atribute params can not be empty ");
                 return false;
          }else{
 
             if(parametros.fields.length > 0 ){
-                // get id form 
-                console.log($('#'+parametros.fields[0]).closest("form"))
+               
                 var form = $('#'+parametros.fields[0]).closest("form")[0];
-                console.log(form)
-                var myparams = [];
-                
-                $.each( form.elements, function( k, object ) {
-                    //alert( "Key: " + k + ", Value: " + v );
-                    console.log(object)
+                var myparams = [];      
+                $.each( form.elements, function( k, object ){                   
+                   	 
+                         if($('#'+object.id).attr('type')!== "submit"){
+			    
+				dataReturn[''+$('#'+object.id).attr('id')] = $('#'+object.id).val();
+                         }
                 });
 
-
+		return dataReturn;
 
             }else{
 
