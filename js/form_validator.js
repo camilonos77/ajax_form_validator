@@ -8,9 +8,11 @@
     var spanErrorFin  = "</span>";
     var ERROR_ES = "Error el campo es requerido ";
     var ERROR_EMAIL_ES = "Error el campo  correo no es válido ";
+    var parametros  = {};
     // Define function constructor
     this.AjaxValidator = function(params) {
 
+       parametros =  params;
        if(params === null || params === undefined || checkObject(params) === 0){
                 console.log(" Error atribute params can not be empty ");
                 return false;
@@ -48,6 +50,41 @@
 
 
     // Internal lib funciones
+
+
+    /*
+        Return all data from form
+    */
+
+    AjaxValidator.prototype.getData = function(){
+
+        if(parametros === null || parametros === undefined || checkObject(parametros) === 0){
+                console.log(" Error atribute params can not be empty ");
+                return false;
+         }else{
+
+            if(parametros.fields.length > 0 ){
+                // get id form 
+                console.log($('#'+parametros.fields[0]).closest("form"))
+                var form = $('#'+parametros.fields[0]).closest("form")[0];
+                console.log(form)
+                var myparams = [];
+                
+                $.each( form.elements, function( k, object ) {
+                    //alert( "Key: " + k + ", Value: " + v );
+                    console.log(object)
+                });
+
+
+
+            }else{
+
+                return {};
+            }
+
+         }
+    }
+
 
     /*
         Validate size content field
@@ -138,11 +175,6 @@
                 return true;    
             }
     }
-
-
-
-
-
 
 
     /*
