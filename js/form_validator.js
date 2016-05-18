@@ -14,29 +14,75 @@
 
        parametros =  params;
        if(params === null || params === undefined || checkObject(params) === 0){
-                console.log(" Error atribute params can not be empty ");
+                console.error(" Error atribute params can not be empty ");
                 return false;
          }else{
                 // clear existing errors
                 $('.error-label-form-validator').remove();
                 counterErrros = 0;
 
-                // check if has fields param
-                if(params.hasOwnProperty('fields') === true ){
 
-                    counterFields =  params.fields.length;
+                // check if use default form on the page or use the form selected by user
 
-                    for(var counter = 0; counter < params.fields.length;counter++ ){
+                if(params.hasOwnProperty('form') === true){
 
-                        counterErrros += validateSize(params.fields[counter]);
+                    var formById = document.getElementById(params.form);
+                    
+
+                    if(formById === null){  
+                        //throw "Sorry, the ID "+params.form+" for the form tag not exists";
+                        console.error("Sorry, the ID "+params.form+" for the form tag not exists"); 
+                        return false;
+                    }else{
+
+                       
+
+                        if(params.hasOwnProperty('fields') === true ){
+
+                            counterFields =  params.fields.length;
+
+                            for(var counter = 0; counter < params.fields.length;counter++ ){
+
+                                counterErrros += validateSize(params.fields[counter]);
+                            }
+                        }
+
+                        // Validate fields by param required
+                        var formNodes = formById.elements;
+                       
+                        for(var counter = 0; counter < formNodes.length;counter++ ){
+
+                                if(formNodes[counter].hasAttribute('required')){
+                                     if(formNodes[counter].id!== null){
+
+                                        counterErrros += validateSize( formNodes[counter].id );
+                                     }      
+                                }
+                               
+                        }
+
+                      
+
+
                     }
+
                 }else{
+                        // check if has fields param
+                        if(params.hasOwnProperty('fields') === true ){
 
-                    //console.log(" The validation form need the fields specification ");
-                    return false;
-                }
+                            counterFields =  params.fields.length;
 
+                            for(var counter = 0; counter < params.fields.length;counter++ ){
 
+                                counterErrros += validateSize(params.fields[counter]);
+                            }
+                        }else{
+
+                            //console.log(" The validation form need the fields specification ");
+                            return false;
+                        }
+
+            }
        }
     }
 
@@ -63,19 +109,23 @@
                 return false;
          }else{
 
+            // Add validation form selection
+
+
+
             if(parametros.fields.length > 0 ){
                
                 var form = $('#'+parametros.fields[0]).closest("form")[0];
                 var myparams = [];      
                 $.each( form.elements, function( k, object ){                   
-                   	 
+                     
                          if($('#'+object.id).attr('type')!== "submit"){
-			    
-				dataReturn[''+$('#'+object.id).attr('id')] = $('#'+object.id).val();
+                
+                dataReturn[''+$('#'+object.id).attr('id')] = $('#'+object.id).val();
                          }
                 });
 
-		return dataReturn;
+        return dataReturn;
 
             }else{
 
@@ -163,8 +213,6 @@
         
     }
 
-
-    
     /*
         Check if field is email
     */
