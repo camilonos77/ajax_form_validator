@@ -105,33 +105,82 @@
     AjaxValidator.prototype.getData = function(){
         var dataReturn = {};
         if(parametros === null || parametros === undefined || checkObject(parametros) === 0){
-                console.log(" Error atribute params can not be empty ");
+                console.error(" Error atribute params can not be empty ");
                 return false;
          }else{
 
             // Add validation form selection
 
+            if(parametros.hasOwnProperty('form') === true){
 
 
-            if(parametros.fields.length > 0 ){
-               
-                var form = $('#'+parametros.fields[0]).closest("form")[0];
-                var myparams = [];      
-                $.each( form.elements, function( k, object ){                   
-                     
-                         if($('#'+object.id).attr('type')!== "submit"){
-                
-                dataReturn[''+$('#'+object.id).attr('id')] = $('#'+object.id).val();
-                         }
-                });
+                var formById = document.getElementById(parametros.form);
+                    
 
-        return dataReturn;
+                    if(formById === null){  
+                        //throw "Sorry, the ID "+params.form+" for the form tag not exists";
+                        console.error("Sorry, the ID "+parametros.form+" for the form tag not exists"); 
+                        return false;
+                    }else{
+
+                       
+
+                        if(parametros.hasOwnProperty('fields') === true ){
+
+                            counterFields =  parametros.fields.length;
+
+                            for(var counter = 0; counter < parametros.fields.length;counter++ ){
+
+                                                           
+                                var idNode =  parametros.fields[counter];
+                                        
+                                if($('#'+idNode).attr('type')!== "submit"){
+                                    dataReturn[''+idNode] = $('#'+idNode).val();
+                                }
+                            }
+                        }
+
+                        // Validate fields by param required
+                        var formNodes = formById.elements;
+                       
+                        for(var counter = 0; counter < formNodes.length;counter++ ){
+                                
+                                     if(formNodes[counter].id!== null){
+
+                                        
+                                        var idNode =  formNodes[counter].id;
+                                        
+                                        if($('#'+idNode).attr('type')!== "submit"){
+                                            dataReturn[''+idNode] = $('#'+idNode).val();
+                                        }
+                                     }      
+                        }
+                    }    
+
+                     return dataReturn;
 
             }else{
 
-                return {};
-            }
+                if(parametros.fields.length > 0 ){
+                   
+                    var form = $('#'+parametros.fields[0]).closest("form")[0];
+                    var myparams = [];      
+                    $.each( form.elements, function( k, object ){                   
+                         
+                             if($('#'+object.id).attr('type')!== "submit"){
+                    
+                    dataReturn[''+$('#'+object.id).attr('id')] = $('#'+object.id).val();
+                             }
+                    });
 
+                    
+                    return dataReturn;
+
+                }else{
+
+                    return {};
+                }
+            }
          }
     }
 
